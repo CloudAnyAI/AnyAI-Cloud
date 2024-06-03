@@ -261,8 +261,17 @@ function navigate() {
         document.getElementById('changePageButton').addEventListener('click', function() {
             // Sử dụng pushState để thay đổi URL mà không tải lại trang
             window.history.pushState({}, '', '/toolimg.html');
-            // Bạn có thể thêm mã để thay đổi nội dung trang tại đây nếu cần
-            alert('URL đã được thay đổi sang /toolimg.html mà không tải lại trang');
+
+            // Sử dụng AJAX để tải nội dung của toolimg.html
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/toolimg.html', true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    // Chèn nội dung vào vùng chứa
+                    document.getElementById('content').innerHTML = xhr.responseText;
+                }
+            };
+            xhr.send();
         });
     </script>
   </body>
