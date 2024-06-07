@@ -1,0 +1,6 @@
+User-agent: Googlebot
+Disallow: /---------.js
+Allow: /toolimg.html
+
+User-agent: Googlebot
+Disallow: /no-google/
