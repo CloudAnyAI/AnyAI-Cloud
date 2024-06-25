@@ -1,50 +1,115 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AnyAI - Danh Trình</title>
     <script src="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.3/dist/tailwind.min.css"></script>
-     <link rel="icon" type="image/x-icon" href="favicon.jpg">
+    <link rel="icon" type="image/x-icon" href="favicon.jpg">
     <meta name="description" content="Sản phẩm do Danh Trình tạo ra, thuộc Việt Nam">
-		<meta name="keywords" content="ai, anyai, tool, vietnam, danh trình, chiêm thành tấn, any">
+    <meta name="keywords" content="ai, anyai, tool, vietnam, danh trình, chiêm thành tấn, any">
 
-		<meta property="og:url" content="https://anyai.netlify.app">
-		<meta property="og:title" content="AnyAI by Danh Trình - AnyAI.Netlify.App">
-		<meta property="og:description" content="Sản phẩm do Danh Trình tạo ra, thuộc Việt Nam">
-		<meta property="og:image" content="favicon.jpg">
+    <meta property="og:url" content="https://anyai.netlify.app">
+    <meta property="og:title" content="AnyAI by Danh Trình - AnyAI.Netlify.App">
+    <meta property="og:description" content="Sản phẩm do Danh Trình tạo ra, thuộc Việt Nam">
+    <meta property="og:image" content="favicon.jpg">
 
-		<link rel='manifest' href='/manifest.json'>
-		<meta name='mobile-web-app-capable' content='yes'>
-		<meta name='apple-mobile-web-app-capable' content='yes'>
-		<meta name='application-name' content='AnyAI+'><meta name='apple-mobile-web-app-title' content='AnyAI+'>
-		<meta name='msapplication-starturl' content='/'>
-  <!-- stylesheet -->
-<link
-  rel="stylesheet"
-  href="https://unpkg.com/@material-tailwind/html@latest/styles/material-tailwind.css"
-/>
- 
-<!-- script -->
-<script src="https://unpkg.com/@material-tailwind/html@latest/scripts/script-name.js"></script>
-
-	<!-- Google Fonts -->
-    
+    <link rel='manifest' href='/manifest.json'>
+    <meta name='mobile-web-app-capable' content='yes'>
+    <meta name='apple-mobile-web-app-capable' content='yes'>
+    <meta name='application-name' content='AnyAI+'><meta name='apple-mobile-web-app-title' content='AnyAI+'>
+    <meta name='msapplication-starturl' content='/'>
+    <!-- stylesheet -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@material-tailwind/html@latest/styles/material-tailwind.css"
+    />
+    <!-- script -->
+    <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/script-name.js"></script>
+    <!-- Google Fonts -->
     <link
       href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;1,800&display=swap"
       rel="stylesheet"
     />
     <style>
-	    body {
-		    font-family: Rubik;
-	    }
-        .backdrop-blur {
-            backdrop-filter: blur(12px);
+      body {
+        font-family: Rubik;
+      }
+      /*css for color*/
+      .bg-[#000000e5] {
+        background-color: #000000e5;
+      }
+      .backdrop-blur {
+        backdrop-filter: blur(8px);
+        background-color: #ffffff89;
+      }
+      ...
+    </style>
+    <script>
+      const usersData = [
+        {
+          username: "testuser",
+          password: "123456",
+          fullname: "Test User",
+          gender: "Male",
+          country: "Vietnam",
+          social: "https://facebook.com/testuser",
+          avatar: "https://via.placeholder.com/100"
+        },
+        {
+          username: "janedoe",
+          password: "password123",
+          fullname: "Jane Doe",
+          gender: "Female",
+          country: "USA",
+          social: "https://twitter.com/janedoe",
+          avatar: "https://i.9mobi.vn/cf/Images/huy/2021/12/6/anh-gai-xinh-3.jpg"
         }
+      ];
 
-        .hidden {
-            display: none;
+      function checkLogin() {
+        const isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn'));
+        if (isLoggedIn && isLoggedIn.username) {
+          document.getElementById('login-modal').classList.add('hidden');
+          displayUserInfo();
+        } else {
+          document.getElementById('login-modal').classList.remove('hidden');
         }
+      }
+
+      function validateLogin() {
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const user = usersData.find(user => user.username === username && user.password === password);
+
+        if (user) {
+          const accountType = username.toLowerCase() === 'janedoe' ? 'unlimited' : 'limited';
+          localStorage.setItem('isLoggedIn', JSON.stringify({ username: user.username, accountType }));
+          localStorage.setItem('userInfo', JSON.stringify(user));
+          document.getElementById('login-modal').classList.add('hidden');
+          displayUserInfo();
+        } else {
+          alert('Invalid username or password.');
+        }
+      }
+
+      function displayUserInfo() {
+        const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+        if (userInfo) {
+          document.getElementById('user-avatar').src = userInfo.avatar;
+          document.getElementById('info-username').innerText = userInfo.username;
+          document.getElementById('info-fullname').innerText = userInfo.fullname;
+          document.getElementById('info-gender').innerText = userInfo.gender;
+          document.getElementById('info-country').innerText = userInfo.country;
+          document.getElementById('info-social').href = userInfo.social;
+          document.getElementById('user-info').classList.remove('hidden');
+        }
+      }
+    </script>
+</head>
+<body class="bg-white text-gray-800">
+
+        <style>
 
         .jump-up {
             animation: jumpUp 0.4s ease-out forwards;
@@ -57,10 +122,10 @@
         }
 
         function hideGenerateButton() {
-            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-            if (userInfo && userInfo.username === 'testuser') {
-                const usageKey = `usage_${userInfo.userId}_${new Date().toISOString().split('T')[0]}`;
-                let storedUsageDate = localStorage.getItem("usageDate");
+            const isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn'));
+            if (isLoggedIn && isLoggedIn.username === 'testuser') {
+                const usageKey = `usage_${isLoggedIn.username}_${new Date().toISOString().split('T')[0]}`;
+                let storedUsageDate = localStorage.getItem('usageDate');
                 let usageCount = 0;
 
                 if (storedUsageDate !== new Date().toISOString().split('T')[0]) {
@@ -199,7 +264,7 @@
     <div data-dialog-backdrop="dialog-xlll" data-dialog-backdrop-close="true"
       class="pointer-events-none fixed  z-50 grid h-screen w-screen place-items-center bg-black bg-opacity-60 opacity-0 backdrop-blur-sm transition-opacity duration-300">
       <div data-dialog="dialog-xlll"
-        class="relative m-4 w-3/4 min-w-[75%] max-w-[75%] rounded-lg bg-white font-sans text-base font-light leading-relaxed text-blue-gray-500 antialiased shadow-2xl">
+        class="relative m-4 w-3/4 min-w-[75%] max-w-[75%] rounded-2xl bg-[#000000e5] font-sans text-base font-light leading-relaxed text-blue-gray-500 antialiased shadow-2xl">
         <div
           class="flex items-center p-4 font-sans text-2xl antialiased font-semibold leading-snug shrink-0 text-blue-gray-900">
           Tạo hình ảnh AnyAI Im.4
@@ -755,15 +820,21 @@
         </div>
     </div>
     <div id="page5" class="h-screen pt-20 hidden">
-        <h2 class="text-center">User Information</h2>
-        <div id="user-info" class="flex flex-col ml-5 mr-5">
-            <span class="bg-gray-200 rounded-2xl py-5 px-5">Tên:</p><span id="user-username" class="text-lg font-bold"></span></span>
-            <p id="user-country" class="text-sm text-gray-600"></p>
-         
-          <button onclick="deleteCookies()" 
-            data-ripple-light="true"
-            class="mt-4 px-4 py-2 bg-red-600 text-white rounded-md">Delete Cookies</button>
-            <button onclick="logout()" class="mt-4 px-4 py-2 bg-purple-600 text-white rounded-md">Logout</button>
+    <h2 class="text-center">User Information</h2>
+    <div id="user-info" class="text-center mt-4 text-gray-800 hidden">
+        <div>
+            <img id="user-avatar" src="" alt="Avatar" class="w-32 h-32 mx-auto rounded-full">
+            <p><strong>Username:</strong> <span id="info-username"></span></p>
+            <p><strong>Full Name:</strong> <span id="info-fullname"></span></p>
+            <p><strong>Gender:</strong> <span id="info-gender"></span></p>
+            <p><strong>Country:</strong> <span id="info-country"></span></p>
+            <p><strong>Social:</strong> <a data-ripple-light="true" type="button" class="align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none" id="info-social" href="" target="_blank">Liên kết</a></p>
+        </div>
+    </div>
+    <button onclick="deleteCookies()" 
+        data-ripple-light="true"
+        class="mt-4 px-4 py-2 bg-red-600 text-white rounded-md">Delete Cookies</button>
+    <button onclick="logout()" class="mt-4 px-4 py-2 bg-purple-600 text-white rounded-md">Logout</button>
         
         </div>
     </div>
@@ -771,7 +842,7 @@
     <!-- Bottom Navigation -->
     
 
-<div class="fixed z-40 mr-4 h-16 max-w-lg mx-auto backdrop-blur border border-gray-200 rounded-full bottom-4 dark:bg-gray-700 dark:border-gray-600" style="width: 100%;">
+<div class="fixed z-40 mr-4 h-16 max-w-lg mx-auto backdrop-blur bg-[#000000e5] border border-gray-200 rounded-full bottom-4 dark:bg-gray-700 dark:border-gray-600" style="width: 100%;">
     <div class="grid h-full max-w-lg grid-cols-5 mx-auto">
         <button onclick="showPage(1)" type="button" class="inline-flex flex-col items-center justify-center px-5 rounded-s-full hover:bg-gray-50 dark:hover:bg-gray-800 group">
             <svg class="w-6 h-6 mb-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 48 48" id="Home-3--Streamline-Core" height="48" width="48"><desc>Home 3 Streamline Icon: https://streamlinehq.com</desc><g id="home-3--home-house-roof-shelter"><path id="Union" fill="#454545" d="M25.15837714285714 2.164878857142857c-0.6554057142857143 -0.600792 -1.6613485714285714 -0.600792 -2.3167542857142855 0L3.381987428571428 20.00286857142857C2.319325714285714 20.976994285714284 1.7142857142857142 22.352365714285714 1.7142857142857142 23.793942857142856V41.14285714285714c0 2.8402285714285713 2.3025257142857143 5.142857142857142 5.142857142857142 5.142857142857142h34.285714285714285c2.8402285714285713 0 5.142857142857142 -2.302628571428571 5.142857142857142 -5.142857142857142V23.793942857142856c0 -1.4415771428571427 -0.6051428571428571 -2.816948571428571 -1.6676571428571427 -3.791074285714286L25.15837714285714 2.164878857142857Z" stroke-width="1"></path><path id="Intersect" fill="#bdbdbd" d="M27.428571428571427 46.285714285714285V34.285714285714285c0 -1.8935314285714284 -1.53504 -3.4285714285714284 -3.4285714285714284 -3.4285714285714284s-3.4285714285714284 1.53504 -3.4285714285714284 3.4285714285714284v12h6.857142857142857Z" stroke-width="1"></path></g></svg>
@@ -827,80 +898,15 @@
 </div>
 
     <script>
-        const defaultUsers = [
-            {
-                username: "testuser",
-                password: "password123",
-                country: "USA",
-                userId: "user1",
-                avatar: "https://via.placeholder.com/150/0000FF/808080?Text=TestUserAvatar"
-            },
-            {
-                username: "janedoe",
-                password: "password456",
-                country: "Canada",
-                userId: "user2",
-                avatar: "https://via.placeholder.com/150/FF0000/FFFFFF?Text=JaneDoeAvatar"
-            }
-        ];
-
-        function initializeUsers() {
-            if (!localStorage.getItem('users')) {
-                localStorage.setItem('users', JSON.stringify(defaultUsers));
-            }
-        }
-
-        function checkLogin() {
-            initializeUsers();
-            const isLoggedIn = localStorage.getItem('isLoggedIn');
-            if (isLoggedIn === 'true') {
-                document.getElementById('login-modal').classList.add('hidden');
-                displayUserInfo(); // Ensure user info is displayed on login
-            } else {
-                document.getElementById('login-modal').classList.remove('hidden');
-            }
-        }
-
-        function validateLogin() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const storedUsers = JSON.parse(localStorage.getItem('users'));
-
-            const user = storedUsers.find(user => user.username === username && user.password === password);
-
-            if (user) {
-                localStorage.setItem('isLoggedIn', 'true');
-                localStorage.setItem('userInfo', JSON.stringify({...user}));
-
-                document.getElementById('login-modal').classList.add('hidden');
-                displayUserInfo();
-            } else {
-                alert('Invalid username or password');
-            }
-        }
-
-        function displayUserInfo() {
-            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-
-            if (userInfo) {
-          
-                document.getElementById('user-username').innerText = userInfo.username;
-                document.getElementById('user-country').innerText = userInfo.country;
-                document.getElementById('user-avatar-display').src = userInfo.avatar;
-                document.getElementById('user-avatar-display').classList.remove('hidden');
-                document.getElementById('user-avatar').src = userInfo.avatar;
-                document.getElementById('user-avatar').classList.remove('hidden'); // Ensure avatar is visible if it exists.
-            }
-        }
-
+      
         function openImageGeneratorModal() {
-            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-            if (userInfo) {
+            const userAccount = JSON.parse(localStorage.getItem('isLoggedIn'));
+            if (userAccount) {
                 const userLimits = {
-                    "janedoe": Infinity,
-                    "testuser": 4
+                    limited: 4,
+                    unlimited: Infinity
                 };
-                const usageKey = `usage_${userInfo.userId}_${new Date().toISOString().split('T')[0]}`;
+                const usageKey = `usage_${isLoggedIn.username}_${new Date().toISOString().split('T')[0]}`;
                 let storedUsageDate = localStorage.getItem("usageDate");
                 let usageCount = 0;
 
@@ -911,10 +917,10 @@
                     usageCount = parseInt(localStorage.getItem(usageKey)) || 0;
                 }
 
-                if (usageCount >= userLimits[userInfo.username]) {
-                    document.getElementById('image-generator-modal').classList.remove('hidden');
-                } else {
+                if (usageCount >= userLimits[isLoggedIn.accountType]) {
                     alert('Bạn đã đạt đến ngưỡng giới hạn.');
+                } else {
+                    document.getElementById('dialog-xlll').classList.remove('hidden');
                 }
             }
         }
@@ -933,7 +939,24 @@
         });
 
         // Initially hide the "Generate Image" button if testuser has exceeded the limit
-        hideGenerateButton();
+        const isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn'));
+        if (isLoggedIn && isLoggedIn.username === 'testuser') {
+            const usageKey = `usage_${isLoggedIn.username}_${new Date().toISOString().split('T')[0]}`;
+            let storedUsageDate = localStorage.getItem('usageDate');
+            let usageCount = 0;
+
+            if (storedUsageDate !== new Date().toISOString().split('T')[0]) {
+                localStorage.setItem('usageDate', new Date().toISOString().split('T')[0]);
+                localStorage.setItem(usageKey, 0);
+            } else {
+                usageCount = parseInt(localStorage.getItem(usageKey)) || 0;
+            }
+
+            if (usageCount >= 4) {
+                const generateButtons = document.querySelectorAll('button[data-role="generate-button"]');
+                generateButtons.forEach(button => button.style.display = 'none');
+            }
+        }
 
         function generateImage(prompt) {
             const userInfo = JSON.parse(localStorage.getItem('userInfo'));
