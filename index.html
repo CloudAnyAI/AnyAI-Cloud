@@ -993,7 +993,7 @@
                 .then(data => {
                     document.getElementById('spinner').classList.add('hidden');
                     if (data.status === 'success') {
-                        document.getElementById('generated-image').innerHTML = `<img src="${data.imageUrl}" alt="Generated Image" class="w-full h-auto mt-4" onclick="openFullscreenModal('${data.imageUrl}')">`;
+                        document.getElementById('generated-image').innerHTML = `<img src="${data.imageUrl}" alt="Generated Image" class="w-full h-auto rounded-2xl mt-4" onclick="openFullscreenModal('${data.imageUrl}')">`;
                         localStorage.setItem(usageKey, usageCount + 1);
                     } else {
                         document.getElementById('error-message').innerText = 'Error generating image. Please try again.';
